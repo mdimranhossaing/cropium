@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,4 +68,17 @@ Route::controller(CustomerController::class)->prefix('customer')->as('customer.'
 
     Route::get('profile', 'profile')->name('profile')->middleware('customer');
     Route::post('logout', 'logout')->name('logout');
+});
+
+
+Route::get('encrypted_value', function(){
+    $password = 123456;
+    $encrypted_password = Crypt::encryptString($password);
+    return $encrypted_password;
+});
+
+Route::get('decrypted_value', function(){
+    $encrypted_password = 'eyJpdiI6IjN5NzFSTTRGTExtSlc4RHZxbWlUcWc9PSIsInZhbHVlIjoiOVBuTkRqdHZPcHVFZkxyNzBYeUFlUT09IiwibWFjIjoiMTk4Y2ExNTAyYTQ2N2RiZTI0ZTljOTVjOGFjNWRlYzNhNjM3M2VlNjcwZmUyMDRhNDg4OTZiMTNhNjczNzgxMiIsInRhZyI6IiJ9';
+    $decrypted_password = Crypt::decryptString($encrypted_password);
+    return $decrypted_password;
 });
