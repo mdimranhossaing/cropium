@@ -82,3 +82,4 @@ Route::get('decrypted_value', function(){
     $decrypted_password = Crypt::decryptString($encrypted_password);
     return $decrypted_password;
 });
+
