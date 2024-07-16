@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::post('register', function(Request $request){
+
+    $validate_data = $request->validate([
+        'name'  =>  'required|string|max:255',
+        'email' =>  'required|email|unique:users,email',
+        'password'  =>  'required|min:8'
+    ]);
+
+    if(User::create($validate_data)){
+        return response()->json([
+            'message'   => 'User created successfully'
+        ]);
+    } else {
+        return response()->json([
+            'error' =>  'Error'
+        ]);
+    }
+
 });
